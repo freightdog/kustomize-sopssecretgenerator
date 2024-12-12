@@ -1,4 +1,4 @@
-module github.com/freightdog/kustomize-sopssecretgenerator
+module github.com/freightdog/kustomize-sopssecretgenerator/v2
 
 go 1.23.0
 
