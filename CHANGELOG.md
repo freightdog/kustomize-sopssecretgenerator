@@ -6,6 +6,7 @@
 * Upgrade dependencies.
 * Add CRD.
 * Remove old SopsSecret kind.
+* Remove legacy kustomize plugin support.
 
 ## Version 1.6.0
 

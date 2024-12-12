@@ -18,7 +18,6 @@ import (
 	"unicode/utf8"
 
 	"github.com/GoogleContainerTools/kpt-functions-sdk/go/fn"
-	"github.com/getsops/sops/v3"
 	"github.com/getsops/sops/v3/cmd/sops/formats"
 	"github.com/getsops/sops/v3/decrypt"
 	"github.com/pkg/errors"
@@ -72,15 +71,13 @@ type Secret struct {
 func usage() {
 	usage := `
 		SopsSecretGenerator is a Kustomize generator plugin that generates Secrets from sops-encrypted files.
-		This plugin supports legacy Kustomize plugin style as well KRM Functions style.
 
 		Note:
 		  The usage examples here are for standalone execution. If the plugin is used via Kustomize,
 		  then Kustomize will handle passing data to the plugin.
 
 		Usage:
-		- Legacy: SopsSecretGenerator SopsSecretGenerator.yaml
-		- KRM: cat ResourceList.yaml | SopsSecretGenerator
+		  cat ResourceList.yaml | SopsSecretGenerator
 `
 
 	fmt.Fprintf(os.Stderr, "%s", strings.ReplaceAll(usage, "		", ""))
@@ -88,45 +85,17 @@ func usage() {
 }
 
 func main() {
-	argsLen := len(os.Args)
+	stdinStat, _ := os.Stdin.Stat()
 
-	// Kustomize KRM Function style.
-	if argsLen == 1 {
-		stdinStat, _ := os.Stdin.Stat()
+	// Check the StdIn content.
+	if (stdinStat.Mode() & os.ModeCharDevice) != 0 {
+		usage()
+	}
 
-		// Check the StdIn content.
-		if (stdinStat.Mode() & os.ModeCharDevice) != 0 {
-			usage()
-		}
-
-		err := fn.AsMain(fn.ResourceListProcessorFunc(generateKRMManifest))
-		if err != nil {
-			fmt.Println(err)
-			usage()
-		}
-
-		// Kustomize legacy plugin style.
-	} else {
-		if argsLen != 2 {
-			usage()
-		}
-
-		sopsSecretGeneratorManifest, err := readFile(os.Args[1])
-		if err != nil {
-			fmt.Println(err)
-			usage()
-		}
-
-		secretManifest, err := processSopsSecretGenerator(sopsSecretGeneratorManifest)
-		if err != nil {
-			if sopsErr, ok := errors.Cause(err).(sops.UserError); ok {
-				_, _ = fmt.Fprintf(os.Stderr, "Error: %v\n%s\n", err, sopsErr.UserError())
-			} else {
-				_, _ = fmt.Fprintf(os.Stderr, "Error: %v\n", err)
-			}
-			os.Exit(2)
-		}
-		fmt.Print(secretManifest)
+	err := fn.AsMain(fn.ResourceListProcessorFunc(generateKRMManifest))
+	if err != nil {
+		fmt.Println(err)
+		usage()
 	}
 }
 
