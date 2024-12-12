@@ -1,10 +1,10 @@
 # kustomize-sopssecretgenerator
 
-[![Build Status](https://travis-ci.org/freightdog/kustomize-sopssecretgenerator.svg?branch=master)](https://travis-ci.org/freightdog/kustomize-sopssecretgenerator)
+[![Build Status](https://travis-ci.org/freightdog/kustomize-sopssecretgenerator.svg?branch=main)](https://travis-ci.org/freightdog/kustomize-sopssecretgenerator)
 [![Go Report Card](https://goreportcard.com/badge/github.com/freightdog/kustomize-sopssecretgenerator)](https://goreportcard.com/report/github.com/freightdog/kustomize-sopssecretgenerator)
 [![Codecov](https://img.shields.io/codecov/c/github/freightdog/kustomize-sopssecretgenerator)](https://codecov.io/gh/freightdog/kustomize-sopssecretgenerator)
 [![Latest Release](https://img.shields.io/github/v/release/freightdog/kustomize-sopssecretgenerator?sort=semver)](https://github.com/freightdog/kustomize-sopssecretgenerator/releases/latest)
-[![License](https://img.shields.io/github/license/freightdog/kustomize-sopssecretgenerator)](https://github.com/freightdog/kustomize-sopssecretgenerator/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/freightdog/kustomize-sopssecretgenerator)](https://github.com/freightdog/kustomize-sopssecretgenerator/blob/main/LICENSE)
 
 SecretGenerator ❤ sops
 
@@ -13,11 +13,11 @@ SecretGenerator ❤ sops
 
 [Kustomize](https://github.com/kubernetes-sigs/kustomize) is a great tool for implementing a [GitOps](https://www.weave.works/blog/gitops-operations-by-pull-request) workflow. When a repository describes the entire system state, it often contains secrets that need to be encrypted at rest. Mozilla's [sops](https://github.com/mozilla/sops) is a simple and flexible tool that is very suitable for that task.
 
-This Kustomize plugin allows you to create Secrets transparently from sops-encrypted files during resource generation. It is explicitly modeled after the builtin [SecretGenerator](https://github.com/kubernetes-sigs/kustomize/blob/master/docs/plugins/builtins.md#secretgenerator) plugin. Because it is an exec plugin, it is not tied to the specific compilation of Kustomize, [like Go plugins are](https://github.com/kubernetes-sigs/kustomize/blob/master/docs/plugins/goPluginCaveats.md).
+This Kustomize plugin allows you to create Secrets transparently from sops-encrypted files during resource generation. It is explicitly modeled after the builtin [SecretGenerator](https://github.com/kubernetes-sigs/kustomize/blob/main/docs/plugins/builtins.md#secretgenerator) plugin. Because it is an exec plugin, it is not tied to the specific compilation of Kustomize, [like Go plugins are](https://github.com/kubernetes-sigs/kustomize/blob/main/docs/plugins/goPluginCaveats.md).
 
-Since version 1.5.0, the plugin can be used as a [KRM Function](https://github.com/kubernetes-sigs/kustomize/blob/master/cmd/config/docs/api-conventions/functions-spec.md).
+Since version 1.5.0, the plugin can be used as a [KRM Function](https://github.com/kubernetes-sigs/kustomize/blob/main/cmd/config/docs/api-conventions/functions-spec.md).
 
-Credit goes to [Seth Pollack](https://github.com/sethpollack) for the [Kustomize Secret Generator Plugins KEP](https://github.com/kubernetes/enhancements/blob/master/keps/sig-cli/kustomize-secret-generator-plugins.md) and subsequent implementation that made this possible.
+Credit goes to [Seth Pollack](https://github.com/sethpollack) for the [Kustomize Secret Generator Plugins KEP](https://github.com/kubernetes/enhancements/blob/main/keps/sig-cli/kustomize-secret-generator-plugins.md) and subsequent implementation that made this possible.
 
 
 ## Installation
