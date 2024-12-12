@@ -29,9 +29,9 @@ SopsSecretGenerator is available as a binary, or as a Docker image.
 
 Download the `SopsSecretGenerator` binary for your platform from the [GitHub releases page](https://github.com/freightdog/kustomize-sopssecretgenerator/releases) and make it executable.
 
-For example, to install version 1.6.0 on Linux:
+For example, to install version 2.0.0 on Linux:
 ```bash
-VERSION=1.6.0 PLATFORM=linux ARCH=amd64
+VERSION=2.0.0 PLATFORM=linux ARCH=amd64
 curl -Lo SopsSecretGenerator "https://github.com/freightdog/kustomize-sopssecretgenerator/releases/download/v${VERSION}/SopsSecretGenerator_${VERSION}_${PLATFORM}_${ARCH}"
 chmod +x SopsSecretGenerator
 ```
