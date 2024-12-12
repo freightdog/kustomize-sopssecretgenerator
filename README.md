@@ -68,7 +68,7 @@ generators:
 .
 
 cat <<. >generator.yaml
-apiVersion: freightdog.com/v1
+apiVersion: kustomize.freightdog.com/v1
 kind: SopsSecretGenerator
 metadata:
   annotations:
@@ -107,8 +107,8 @@ metadata:
 
 First, install the plugin to `$XDG_CONFIG_HOME`: (By default, `$XDG_CONFIG_HOME` points to `$HOME/.config` on Linux and OS X, and `%LOCALAPPDATA%` on Windows.)
 ```bash
-mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/kustomize/plugin/freightdog.com/v1/sopssecretgenerator"
-mv SopsSecretGenerator "${XDG_CONFIG_HOME:-$HOME/.config}/kustomize/plugin/freightdog.com/v1/sopssecretgenerator"
+mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/kustomize/plugin/kustomize.freightdog.com/v1/sopssecretgenerator"
+mv SopsSecretGenerator "${XDG_CONFIG_HOME:-$HOME/.config}/kustomize/plugin/kustomize.freightdog.com/v1/sopssecretgenerator"
 ```
 
 Add a generator to your kustomization:
@@ -119,7 +119,7 @@ generators:
 .
 
 cat <<. >generator.yaml
-apiVersion: freightdog.com/v1
+apiVersion: kustomize.freightdog.com/v1
 kind: SopsSecretGenerator
 metadata:
   name: my-secret
@@ -137,7 +137,7 @@ Like SecretGenerator, SopsSecretGenerator supports the [generatorOptions](https:
 
 An example showing all options:
 
-    apiVersion: freightdog.com/v1
+    apiVersion: kustomize.freightdog.com/v1
     kind: SopsSecretGenerator
     metadata:
       name: my-secret

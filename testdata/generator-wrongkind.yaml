@@ -1,4 +1,4 @@
-apiVersion: freightdog.com/v1
+apiVersion: kustomize.freightdog.com/v1
 kind: PlainText
 metadata:
   name: plaintext

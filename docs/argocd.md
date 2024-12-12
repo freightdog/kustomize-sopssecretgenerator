@@ -38,7 +38,7 @@ Use a kustomize [patchStrategicMerge](https://github.com/kubernetes-sigs/kustomi
           containers:
             - name: argocd-repo-server
               volumeMounts:
-                - mountPath: /.config/kustomize/plugin/freightdog.com/v1/sopssecretgenerator/SopsSecretGenerator
+                - mountPath: /.config/kustomize/plugin/kustomize.freightdog.com/v1/sopssecretgenerator/SopsSecretGenerator
                   name: custom-tools
                   subPath: SopsSecretGenerator
               env:

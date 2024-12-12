@@ -24,7 +24,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-const apiVersion = "freightdog.com/v1"
+const apiVersion = "kustomize.freightdog.com/v1"
 const kind = "SopsSecretGenerator"
 
 var utf8bom = []byte{0xEF, 0xBB, 0xBF}
@@ -80,7 +80,7 @@ func usage() {
 		  cat ResourceList.yaml | SopsSecretGenerator
 `
 
-	fmt.Fprintf(os.Stderr, "%s", strings.ReplaceAll(usage, "		", ""))
+	_, _ = fmt.Fprintf(os.Stderr, "%s", strings.ReplaceAll(usage, "		", ""))
 	os.Exit(1)
 }
 
