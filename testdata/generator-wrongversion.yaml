@@ -1,4 +1,4 @@
-apiVersion: goabout.com/v1alpha
+apiVersion: freightdog.com/v1alpha
 kind: SopsSecretGenerator
 metadata:
   name: secret

@@ -1,10 +1,10 @@
 # kustomize-sopssecretgenerator
 
-[![Build Status](https://travis-ci.org/goabout/kustomize-sopssecretgenerator.svg?branch=master)](https://travis-ci.org/goabout/kustomize-sopssecretgenerator)
-[![Go Report Card](https://goreportcard.com/badge/github.com/goabout/kustomize-sopssecretgenerator)](https://goreportcard.com/report/github.com/goabout/kustomize-sopssecretgenerator)
-[![Codecov](https://img.shields.io/codecov/c/github/goabout/kustomize-sopssecretgenerator)](https://codecov.io/gh/goabout/kustomize-sopssecretgenerator)
-[![Latest Release](https://img.shields.io/github/v/release/goabout/kustomize-sopssecretgenerator?sort=semver)](https://github.com/goabout/kustomize-sopssecretgenerator/releases/latest)
-[![License](https://img.shields.io/github/license/goabout/kustomize-sopssecretgenerator)](https://github.com/goabout/kustomize-sopssecretgenerator/blob/master/LICENSE)
+[![Build Status](https://travis-ci.org/freightdog/kustomize-sopssecretgenerator.svg?branch=master)](https://travis-ci.org/freightdog/kustomize-sopssecretgenerator)
+[![Go Report Card](https://goreportcard.com/badge/github.com/freightdog/kustomize-sopssecretgenerator)](https://goreportcard.com/report/github.com/freightdog/kustomize-sopssecretgenerator)
+[![Codecov](https://img.shields.io/codecov/c/github/freightdog/kustomize-sopssecretgenerator)](https://codecov.io/gh/freightdog/kustomize-sopssecretgenerator)
+[![Latest Release](https://img.shields.io/github/v/release/freightdog/kustomize-sopssecretgenerator?sort=semver)](https://github.com/freightdog/kustomize-sopssecretgenerator/releases/latest)
+[![License](https://img.shields.io/github/license/freightdog/kustomize-sopssecretgenerator)](https://github.com/freightdog/kustomize-sopssecretgenerator/blob/master/LICENSE)
 
 SecretGenerator ❤ sops
 
@@ -27,12 +27,12 @@ SopsSecretGenerator is available as a binary, or as a Docker image.
 
 ### Binary
 
-Download the `SopsSecretGenerator` binary for your platform from the [GitHub releases page](https://github.com/goabout/kustomize-sopssecretgenerator/releases) and make it executable.
+Download the `SopsSecretGenerator` binary for your platform from the [GitHub releases page](https://github.com/freightdog/kustomize-sopssecretgenerator/releases) and make it executable.
 
 For example, to install version 1.6.0 on Linux:
 ```bash
 VERSION=1.6.0 PLATFORM=linux ARCH=amd64
-curl -Lo SopsSecretGenerator "https://github.com/goabout/kustomize-sopssecretgenerator/releases/download/v${VERSION}/SopsSecretGenerator_${VERSION}_${PLATFORM}_${ARCH}"
+curl -Lo SopsSecretGenerator "https://github.com/freightdog/kustomize-sopssecretgenerator/releases/download/v${VERSION}/SopsSecretGenerator_${VERSION}_${PLATFORM}_${ARCH}"
 chmod +x SopsSecretGenerator
 ```
 
@@ -41,7 +41,7 @@ You do not need to install the `sops` binary for the plugin to work. The plugin 
 
 ### Docker image
 
-See the [goabout/kustomize-sopssecretgenerator](https://hub.docker.com/repository/docker/goabout/kustomize-sopssecretgenerator) image at Docker Hub.
+See the [freightdog/kustomize-sopssecretgenerator](https://hub.docker.com/repository/docker/freightdog/kustomize-sopssecretgenerator) image at Docker Hub.
 
 
 ## Usage
@@ -68,7 +68,7 @@ generators:
 .
 
 cat <<. >generator.yaml
-apiVersion: goabout.com/v1beta1
+apiVersion: freightdog.com/v1
 kind: SopsSecretGenerator
 metadata:
   annotations:
@@ -107,8 +107,8 @@ metadata:
 
 First, install the plugin to `$XDG_CONFIG_HOME`: (By default, `$XDG_CONFIG_HOME` points to `$HOME/.config` on Linux and OS X, and `%LOCALAPPDATA%` on Windows.)
 ```bash
-mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/kustomize/plugin/goabout.com/v1beta1/sopssecretgenerator"
-mv SopsSecretGenerator "${XDG_CONFIG_HOME:-$HOME/.config}/kustomize/plugin/goabout.com/v1beta1/sopssecretgenerator"
+mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/kustomize/plugin/freightdog.com/v1/sopssecretgenerator"
+mv SopsSecretGenerator "${XDG_CONFIG_HOME:-$HOME/.config}/kustomize/plugin/freightdog.com/v1/sopssecretgenerator"
 ```
 
 Add a generator to your kustomization:
@@ -119,7 +119,7 @@ generators:
 .
 
 cat <<. >generator.yaml
-apiVersion: goabout.com/v1beta1
+apiVersion: freightdog.com/v1
 kind: SopsSecretGenerator
 metadata:
   name: my-secret
@@ -137,7 +137,7 @@ Like SecretGenerator, SopsSecretGenerator supports the [generatorOptions](https:
 
 An example showing all options:
 
-    apiVersion: goabout.com/v1beta1
+    apiVersion: freightdog.com/v1
     kind: SopsSecretGenerator
     metadata:
       name: my-secret
@@ -186,7 +186,7 @@ Most of these projects are in constant development. I invite you to check them o
 
 ## Development
 
-You will need [Go](https://golang.org) 1.17 or higher to develop and build the plugin.
+You will need [Go](https://golang.org) 1.23 or higher to develop and build the plugin.
 
 
 ### Test

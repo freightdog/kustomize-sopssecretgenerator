@@ -1,4 +1,5 @@
 // Copyright 2019-2020 Go About B.V. and contributors
+// Copyright 2024-2025 Freightdog B.V. and contributors
 // Licensed under the Apache License, Version 2.0.
 
 package main
@@ -6,16 +7,15 @@ package main
 import (
 	"encoding/base64"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"reflect"
 	"strings"
 	"testing"
 
 	"github.com/GoogleContainerTools/kpt-functions-sdk/go/fn"
+	"github.com/getsops/sops/v3/pgp"
 	"github.com/lithammer/dedent"
 	"github.com/pkg/errors"
-	"go.mozilla.org/sops/v3/pgp"
 )
 
 const testkeyFingerprint = "2D2483DF73A3A0FAEE3C2A695BDC395360CE8FF4"
@@ -126,7 +126,7 @@ func Test_GenerateKRMManifest(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Run(tt.name, func(t *testing.T) {
-				in, _ := ioutil.ReadFile(tt.args.rlFile)
+				in, _ := os.ReadFile(tt.args.rlFile)
 				out, err := fn.Run(fn.ResourceListProcessorFunc(generateKRMManifest), in)
 				if (err != nil) != tt.want.err {
 					t.Errorf("generateKRMManifest() error = %v, want.err %v", err, tt.want.err)
@@ -178,7 +178,7 @@ func Test_ProcessSopsSecretGenerator(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			sopsSecretGeneratorManifest, _ := ioutil.ReadFile(tt.args.fn)
+			sopsSecretGeneratorManifest, _ := os.ReadFile(tt.args.fn)
 			got, err := processSopsSecretGenerator(sopsSecretGeneratorManifest)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("processSopsSecretGenerator() error = %v, wantErr %v", err, tt.wantErr)
@@ -206,7 +206,7 @@ func Test_generateSecret(t *testing.T) {
 			args{
 				SopsSecretGenerator{
 					TypeMeta: TypeMeta{
-						APIVersion: "goabout/v1beta1",
+						APIVersion: "freightdog/v1beta1",
 						Kind:       "SopsSecretGenerator",
 					},
 					ObjectMeta: ObjectMeta{
@@ -246,7 +246,7 @@ func Test_generateSecret(t *testing.T) {
 			args{
 				SopsSecretGenerator{
 					TypeMeta: TypeMeta{
-						APIVersion: "goabout/v1beta1",
+						APIVersion: "freightdog/v1beta1",
 						Kind:       "SopsSecretGenerator",
 					},
 					ObjectMeta: ObjectMeta{
@@ -309,7 +309,6 @@ func Test_readInput(t *testing.T) {
 		wantErr bool
 	}{
 		{"SopsSecretGenerator", args{"testdata/generator.yaml"}, ssg(nil, []string{"testdata/file.txt"}), false},
-		{"SopsSecret", args{"testdata/generator-oldkind.yaml"}, ssg(nil, []string{"testdata/file.txt"}), false},
 		{"NotYaml", args{"testdata/notyaml.txt"}, SopsSecretGenerator{}, true},
 		{"WrongVersion", args{"testdata/generator-wrongversion.yaml"}, SopsSecretGenerator{}, true},
 		{"WrongKind", args{"testdata/generator-wrongkind.yaml"}, SopsSecretGenerator{}, true},
@@ -317,7 +316,7 @@ func Test_readInput(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			sopsSecretGeneratorManifest, _ := ioutil.ReadFile(tt.args.fn)
+			sopsSecretGeneratorManifest, _ := os.ReadFile(tt.args.fn)
 			got, err := readInput(sopsSecretGeneratorManifest)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("readInput() error = %v, wantErr %v", err, tt.wantErr)
@@ -583,7 +582,7 @@ func Test_parseFileSource(t *testing.T) {
 		{"Yaml", args{"testdata/file.yaml"}, kvMap{"file.yaml": b64("var: secret\n")}, false},
 		{"Json", args{"testdata/file.json"}, kvMap{"file.json": b64("{\n\t\"var\": \"secret\"\n}")}, false},
 		{"Env", args{"testdata/file.env"}, kvMap{"file.env": b64("VAR=secret\n")}, false},
-		{"Ini", args{"testdata/file.ini"}, kvMap{"file.ini": b64("[section]\nvar = secret\n\n")}, false},
+		{"Ini", args{"testdata/file.ini"}, kvMap{"file.ini": b64("[section]\nvar = secret\n")}, false},
 		{"Binary", args{"testdata/file.txt"}, kvMap{"file.txt": b64("secret\n")}, false},
 		{"BinaryRenamed", args{"renamed.txt=testdata/file.txt"}, kvMap{"renamed.txt": b64("secret\n")}, false},
 		{"MissingFile", args{"testdata/missing.txt"}, kvMap{}, true},

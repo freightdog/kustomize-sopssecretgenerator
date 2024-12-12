@@ -3,7 +3,7 @@ kind: ResourceList
 metadata:
   name: krm-function-input
 items:
-- apiVersion: goabout.com/v1beta1
+- apiVersion: freightdog.com/v1
   kind: SoupSecretGenerator
   metadata:
     annotations:

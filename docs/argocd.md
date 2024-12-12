@@ -14,14 +14,14 @@ Use a kustomize [patchStrategicMerge](https://github.com/kubernetes-sigs/kustomi
             - name: custom-tools
               emptyDir: {}
           initContainers:
-            - name: install-goaboutsops
+            - name: install-freightdogsops
               image: alpine:3.11.3
               command: ["/bin/sh", "-c"]
               args:
-                - echo "Installing goabout kustomize sops...";
+                - echo "Installing freightdog kustomize sops...";
                   set -e;
                   set -x;
-                  wget -O /custom-tools/SopsSecretGenerator https://github.com/goabout/kustomize-sopssecretgenerator/releases/download/v${VERSION}/SopsSecretGenerator_${VERSION}_${PLATFORM}_${ARCH};
+                  wget -O /custom-tools/SopsSecretGenerator https://github.com/freightdog/kustomize-sopssecretgenerator/releases/download/v${VERSION}/SopsSecretGenerator_${VERSION}_${PLATFORM}_${ARCH};
                   chmod -v +x /custom-tools/SopsSecretGenerator;
                   set +x;
                   echo "Done.";
@@ -38,7 +38,7 @@ Use a kustomize [patchStrategicMerge](https://github.com/kubernetes-sigs/kustomi
           containers:
             - name: argocd-repo-server
               volumeMounts:
-                - mountPath: /.config/kustomize/plugin/goabout.com/v1beta1/sopssecretgenerator/SopsSecretGenerator
+                - mountPath: /.config/kustomize/plugin/freightdog.com/v1/sopssecretgenerator/SopsSecretGenerator
                   name: custom-tools
                   subPath: SopsSecretGenerator
               env:

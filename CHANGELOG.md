@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 2.0.0
+
+* Upgrade Go version to 1.23.
+* Upgrade dependencies.
+* Add CRD.
+* Remove old SopsSecret kind.
+
 ## Version 1.6.0
 
 * Build Docker images.

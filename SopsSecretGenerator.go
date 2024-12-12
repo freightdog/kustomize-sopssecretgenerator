@@ -1,4 +1,5 @@
 // Copyright 2019-2020 Go About B.V. and contributors
+// Copyright 2024-2025 Freightdog B.V. and contributors
 // Parts adapted from kustomize, Copyright 2019 The Kubernetes Authors.
 // Licensed under the Apache License, Version 2.0.
 
@@ -10,7 +11,6 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path"
 	"strings"
@@ -18,16 +18,15 @@ import (
 	"unicode/utf8"
 
 	"github.com/GoogleContainerTools/kpt-functions-sdk/go/fn"
+	"github.com/getsops/sops/v3"
+	"github.com/getsops/sops/v3/cmd/sops/formats"
+	"github.com/getsops/sops/v3/decrypt"
 	"github.com/pkg/errors"
-	"go.mozilla.org/sops/v3"
-	"go.mozilla.org/sops/v3/cmd/sops/formats"
-	"go.mozilla.org/sops/v3/decrypt"
 	"gopkg.in/yaml.v3"
 )
 
-const apiVersion = "goabout.com/v1beta1"
+const apiVersion = "freightdog.com/v1"
 const kind = "SopsSecretGenerator"
-const oldKind = "SopsSecret"
 
 var utf8bom = []byte{0xEF, 0xBB, 0xBF}
 var stripAnnotations = map[string]bool{
@@ -211,7 +210,7 @@ func generateSecret(sopsSecret SopsSecretGenerator) (Secret, error) {
 }
 
 func readFile(fileName string) ([]byte, error) {
-	content, err := ioutil.ReadFile(fileName)
+	content, err := os.ReadFile(fileName)
 	if err != nil {
 		return []byte{}, err
 	}
@@ -232,15 +231,11 @@ func readInput(manifestContent []byte) (SopsSecretGenerator, error) {
 		return SopsSecretGenerator{}, err
 	}
 
-	if input.APIVersion != apiVersion || (input.Kind != kind && input.Kind != oldKind) {
+	if input.APIVersion != apiVersion || input.Kind != kind {
 		return SopsSecretGenerator{}, errors.Errorf("input must be apiVersion %s, kind %s", apiVersion, kind)
 	}
 	if input.Name == "" {
 		return SopsSecretGenerator{}, errors.New("input must contain metadata.name value")
-	}
-	// In the next major version, remove old kind compatibility
-	if input.Kind == oldKind {
-		input.Kind = kind
 	}
 	return input, nil
 }
@@ -364,7 +359,7 @@ func parseFileSources(sources []string, data kvMap) error {
 }
 
 func decryptFile(source string) ([]byte, error) {
-	content, err := ioutil.ReadFile(source)
+	content, err := os.ReadFile(source)
 	if err != nil {
 		return nil, errors.Wrap(err, "could not read file")
 	}
@@ -377,12 +372,12 @@ func decryptFile(source string) ([]byte, error) {
 }
 
 func parseFileSource(source string, data kvMap) error {
-	key, fn, err := parseFileName(source)
+	key, fname, err := parseFileName(source)
 	if err != nil {
 		return err
 	}
 
-	decrypted, err := decryptFile(fn)
+	decrypted, err := decryptFile(fname)
 	if err != nil {
 		return err
 	}
